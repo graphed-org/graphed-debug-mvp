@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "graphed-debug"
+version = "0.0.1"
+description = "graphed M6: opt-level lowering, source-mapped picklable tracebacks, visualization"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "graphed-org" }]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+# graphed + graphed-core are installed from their repos (see CI / CONTRIBUTING); not on PyPI yet.
+dependencies = ["graphed", "graphed-core"]
+
+[project.optional-dependencies]
+# the backends + corpus are only needed to exercise realistic analyses in the test-suite
+dev = [
+  "pytest",
+  "pytest-cov",
+  "hypothesis",
+  "mypy",
+  "ruff",
+  "graphed-numpy",
+  "graphed-awkward",
+  "graphed-corpus",
+  "numpy>=1.24",
+  "awkward>=2.6",
+]
+docs = ["sphinx", "furo"]
+
+[project.urls]
+Homepage = "https://github.com/graphed-org/graphed-debug"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/graphed_debug"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests/frozen/m6"]
+addopts = "-q"
+
+[tool.coverage.run]
+branch = true
+source = ["graphed_debug"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+
+[tool.ruff]
+line-length = 110
+src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF", "PLC0415"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src"]
+
+# awkward/numpy are untyped at the array-interop boundary; only exercised in tests anyway.
+[[tool.mypy.overrides]]
+module = ["awkward.*", "numpy.*", "graphed_awkward.*", "graphed_numpy.*", "graphed_corpus.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
