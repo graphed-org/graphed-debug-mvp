@@ -36,7 +36,7 @@ dev = [
 docs = ["sphinx", "furo"]
 
 [project.urls]
-Homepage = "https://github.com/graphed-org/graphed-debug"
+Homepage = "https://github.com/graphed-org/graphed-debug-mvp"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/graphed_debug"]
