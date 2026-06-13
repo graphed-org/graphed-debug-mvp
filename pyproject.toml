@@ -20,6 +20,8 @@ classifiers = [
 dependencies = ["graphed", "graphed-core"]
 
 [project.optional-dependencies]
+# M37: the live dashboard's statistical sampler. uPlot/d3 are vendored static assets (no pip dep).
+dashboard = ["pyinstrument>=5"]
 # the backends + corpus are only needed to exercise realistic analyses in the test-suite
 dev = [
   "pytest",
@@ -32,6 +34,7 @@ dev = [
   "graphed-corpus",
   "numpy>=1.24",
   "awkward>=2.6",
+  "pyinstrument>=5",
 ]
 docs = ["sphinx", "furo"]
 
@@ -69,7 +72,15 @@ strict = true
 files = ["src"]
 
 # awkward/numpy are untyped at the array-interop boundary; only exercised in tests anyway.
+# pyinstrument (M37 dashboard extra) ships no type stubs.
 [[tool.mypy.overrides]]
-module = ["awkward.*", "numpy.*", "graphed_awkward.*", "graphed_numpy.*", "graphed_corpus.*"]
+module = [
+  "awkward.*",
+  "numpy.*",
+  "graphed_awkward.*",
+  "graphed_numpy.*",
+  "graphed_corpus.*",
+  "pyinstrument.*",
+]
 ignore_missing_imports = true
 follow_imports = "skip"
