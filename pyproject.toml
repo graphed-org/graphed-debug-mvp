@@ -20,9 +20,19 @@ classifiers = [
 dependencies = ["graphed", "graphed-core"]
 
 [project.optional-dependencies]
-# M37: the live dashboard's statistical sampler. uPlot/d3 are vendored static assets (no pip dep).
-dashboard = ["pyinstrument>=5"]
-# the backends + corpus are only needed to exercise realistic analyses in the test-suite
+# M37: the live dashboard. FINOS Perspective tables served over Tornado (browser viewer + event
+# ingest); websocket-client is the executor-side network transport; pyinstrument is the sampler.
+# A heavier OPT-IN extra: perspective-python ships wheels for cp311-313 (not 3.14t / every OS), so
+# the dashboard tests are gated to platforms where it installs; the core package stays pure-Python.
+dashboard = [
+  "perspective-python>=3",
+  "tornado>=6.2",
+  "websocket-client>=1.6",
+  "pyinstrument>=5",
+]
+# the backends + corpus are only needed to exercise realistic analyses in the test-suite. The
+# dashboard stack is NOT here: it is the `dashboard` extra (perspective-python has no free-threaded
+# wheel), installed alongside dev on the platforms that support it (CI installs `.[dev,dashboard]`).
 dev = [
   "pytest",
   "pytest-cov",
@@ -34,7 +44,6 @@ dev = [
   "graphed-corpus",
   "numpy>=1.24",
   "awkward>=2.6",
-  "pyinstrument>=5",
 ]
 docs = ["sphinx", "furo"]
 
@@ -72,7 +81,7 @@ strict = true
 files = ["src"]
 
 # awkward/numpy are untyped at the array-interop boundary; only exercised in tests anyway.
-# pyinstrument (M37 dashboard extra) ships no type stubs.
+# The M37 dashboard extra (perspective/tornado/websocket/pyinstrument) ships no type stubs.
 [[tool.mypy.overrides]]
 module = [
   "awkward.*",
@@ -81,6 +90,9 @@ module = [
   "graphed_numpy.*",
   "graphed_corpus.*",
   "pyinstrument.*",
+  "perspective.*",
+  "tornado.*",
+  "websocket.*",
 ]
 ignore_missing_imports = true
 follow_imports = "skip"

@@ -38,7 +38,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install "${{ env.CORE }}"
           python -m pip install "${{ env.FRONTEND }}" "${{ env.NUMPY }}" "${{ env.AWKWARD }}" "${{ env.CORPUS }}"
-          python -m pip install -e ".[dev]"
+          # the dashboard extra (Perspective/Tornado/websocket/pyinstrument) installs via abi3 wheels
+          # on cp311-cp314; the M37 dashboard tests importorskip it, so a leg without it just skips.
+          python -m pip install -e ".[dev,dashboard]"
       - name: Ruff
         run: |
           ruff check .
