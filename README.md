@@ -54,6 +54,7 @@ transport-agnostic**. graphed-debug supplies the three concrete pieces:
 
   # host B: the executor, streaming to A
   from graphed_debug import NetworkMonitor
+  from graphed_exec_local import ProcessExecutor
   ProcessExecutor(monitor=NetworkMonitor("ws://A:8888/ingest").start()).run(plan)
   ```
 
