@@ -84,13 +84,12 @@ def _frame_label(frame: Any) -> str:
 
 
 def _frame_to_tree(frame: Any) -> dict[str, Any]:
-    # pyinstrument's ``frame.time`` is inclusive, so a parent's value always covers its children's
-    # (the invariant d3-flame-graph needs). Microseconds keep integer widths readable.
-    return {
-        "name": _frame_label(frame),
-        "value": max(1, round(frame.time * 1_000_000)),
-        "children": [_frame_to_tree(child) for child in frame.children],
-    }
+    # pyinstrument's ``frame.time`` is inclusive (covers the children), but rounding each node's
+    # microseconds independently can leave a parent 1us short of its children's sum. d3-flame-graph
+    # needs ``parent >= sum(children)``, so clamp the parent up to that floor.
+    children = [_frame_to_tree(child) for child in frame.children]
+    value = max(round(frame.time * 1_000_000), sum(c["value"] for c in children), 1)
+    return {"name": _frame_label(frame), "value": value, "children": children}
 
 
 def flamegraph_tree(session: Session) -> dict[str, Any]:
