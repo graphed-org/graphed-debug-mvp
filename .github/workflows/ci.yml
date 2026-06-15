@@ -74,6 +74,29 @@ jobs:
           python -m pip install -e ".[dev]"
           pytest tests/frozen
 
+  # The live dashboard's BROWSER render, in headless Chromium (M37). The matrix `test` job can't see
+  # this: a Perspective client/server version mismatch or a missing plugin only fails in a browser.
+  # Heavy (a real browser), so it runs once here rather than across the matrix; the matrix's dashboard
+  # tests importorskip Playwright and skip the smoke test.
+  dashboard-smoke:
+    name: dashboard browser smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@stable
+      - shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "${{ env.CORE }}"
+          python -m pip install "${{ env.FRONTEND }}" "${{ env.NUMPY }}" "${{ env.AWKWARD }}" "${{ env.CORPUS }}"
+          python -m pip install -e ".[dev,dashboard]"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+          pytest tests/frozen/m37/test_dashboard_browser.py -q -p no:cacheprovider
+
   docs:
     name: docs (sphinx -W)
     runs-on: ubuntu-latest
