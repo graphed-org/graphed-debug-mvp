@@ -26,8 +26,9 @@ dependencies = ["graphed", "graphed-core"]
 # shares a versioned wire protocol with the server, so the two MUST match exactly, and 3.8.0 (the
 # last FINOS release) is the one whose JS ships browser-ready, plugin-complete `/dist/cdn/` bundles
 # we can vendor. If you bump this pin, re-vendor the matching JS (see static/vendor/README). A
-# heavier OPT-IN extra (perspective ships abi3 wheels for cp311-313, not free-threaded 3.14t), so the
-# dashboard tests importorskip it and the core package stays pure-Python.
+# heavier OPT-IN extra: 3.8.0 ships cp39-abi3 wheels for macOS (arm64+x86_64), linux-x86_64, and
+# Windows (installs on 3.11-3.14 there) but NOT linux-aarch64 or free-threaded 3.14t — on those the
+# dashboard tests importorskip it and skip, and the core package stays pure-Python.
 dashboard = [
   "perspective-python==3.8.0",
   "tornado>=6.2",
