@@ -133,3 +133,25 @@ truncate names). **graphed-debug only** — graphed-core seam + graphed-exec-loc
   ruff + mypy --strict clean, full frozen suite 94.9% cov (`_server.py` 93%), sphinx -W, headless
   browser passes (panels render + tooltips work, zero JS errors). Re-freeze **`freeze-M37-6`**
   (debug only; exec-local stays at -5).
+
+## REVISION (2026-06-16) — per-worker bars become a PER-TASK cell strip
+
+Per user direction: the per-worker aggregate-bar hover wasn't granular enough — they want to mouse
+over any individual completed/in-flight task. **graphed-debug only.**
+
+- Server: `_workers[w]` now keeps a per-task record (`{key, partition, n_entries, state, t_start,
+  t_end, error}`) keyed by task key alongside the aggregate counts — created on `STARTED`, completed
+  in place on `FINISHED`/`ERRORED` (tolerant of an out-of-order finish). `progress()` returns each
+  worker's `tasks` (deep-copied under the lock, sorted by start time then key — JSON encoding outside
+  the lock can't race a concurrent update). Still IOLoop-thread-only, off the data path.
+- UI: the overall bar stays an aggregate stacked track; each **worker row is now a chronological
+  strip of one `.tcell` per task** coloured by state (cells grow to fill when few, shrink to a 4px
+  hoverable min and scroll when many). The delegated `#progress` tooltip prefers a `.tcell` (per-task
+  detail: key, partition, entries, state, duration/in-flight, error) over the row.
+- No perf regression: same server-side handler category (a dict insert per task event); the bigger
+  poll payload is browser-side. Worker emit path unchanged.
+- Frozen suite amended (sanctioned redo): `test_dashboard.py` asserts the per-worker `tasks` records
+  (keys, states, partition/n_entries carried, finished vs in-flight `t_end`); `test_dashboard_browser`
+  hovers an individual `.tcell` and asserts the task tooltip. Gates green: ruff + mypy --strict, full
+  frozen suite 95.1% cov (`_server.py` 93%), sphinx -W, headless browser. Re-freeze **`freeze-M37-7`**
+  (debug only; exec-local stays at -5).
