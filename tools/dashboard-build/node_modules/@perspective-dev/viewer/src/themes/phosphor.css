@@ -1,0 +1,175 @@
+/* ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ * ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+ * ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+ * ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+ * ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+ * ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+ * ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+ * ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+ * ┃ This file is part of the Perspective library, distributed under the terms ┃
+ * ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+ * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ */
+
+@import "./defaults.css";
+
+perspective-viewer,
+perspective-viewer[theme="Phosphor"] {
+    --psp-theme-name: "Phosphor";
+}
+
+perspective-viewer[theme="Phosphor"] {
+    /* perspective-viewer-phosphor--colors */
+    --theme-bg0: #0a0a0a;
+    --theme-bg1: #0d0d0d;
+    --theme-bg2: #1a1a1a;
+
+    --theme-green-bright: #00ff41;
+    --theme-green-mid: #20cc20;
+    --theme-green-dim: #0d660d;
+    --theme-green-dark: #0a3a0a;
+    --theme-amber: #ffb000;
+    --theme-red: #ff3333;
+
+    color: var(--theme-green-mid);
+    background-color: var(--theme-bg0);
+    --psp--color: var(--theme-green-mid);
+    --psp-active--color: var(--theme-green-bright);
+    --psp-error--color: var(--theme-red);
+    --psp-inactive--color: var(--theme-green-dark);
+    --psp-inactive--border-color: var(--theme-green-dark);
+    --psp--background-color: var(--theme-bg1);
+    --psp-active--background: rgba(51, 255, 51, 0.3);
+    --psp-expression--operator--color: var(--theme-green-dim);
+    --psp-expression--function--color: var(--theme-green-bright);
+    --psp-expression--psp-error--color: var(--theme-red);
+    --psp-calendar--filter: invert(1) hue-rotate(70deg);
+    --psp-warning--color: var(--theme-bg0);
+    --psp-warning--background: var(--theme-amber);
+
+    --psp-icon--select-arrow--mask-image: var(
+        --psp-icon--select-arrow-light--mask-image
+    );
+
+    --psp-icon--select-arrow-hover--mask-image: var(
+        --psp-icon--select-arrow-dark--mask-image
+    );
+
+    /* Syntax */
+    --psp-code-editor--symbol--color: var(--theme-green-mid);
+    --psp-code-editor--literal--color: var(--theme-green-bright);
+    --psp-code-editor--operator--color: var(--theme-amber);
+    --psp-code-editor--comment--color: var(--theme-green-dark);
+    --psp-code-editor--column--color: var(--theme-green-bright);
+
+    --psp-status-icon--connected--color: var(--theme-green-bright);
+    --psp-status-icon--initializing--color: var(--theme-amber);
+    --psp-status-icon--psp-error--color: var(--theme-red);
+
+    /* perspective-viewer-phosphor--animation */
+    --psp-status-icon--updating-keyframes-start--filter: opacity(1);
+    --psp-status-icon--updating-keyframes-end--filter: opacity(0);
+    --psp-status-icon--updating-keyframes-start--transform: scale(1);
+    --psp-status-icon--updating-keyframes-end--transform: scale(0.8);
+    --psp-status-icon--keyframes-start--transform: scale(1.1);
+    --psp-status-icon--keyframes-end--transform: scale(1);
+
+    /* perspective-viewer-phosphor--datagrid */
+    --psp-datagrid--pos-cell--color: var(--theme-green-bright);
+    --psp-datagrid--neg-cell--color: var(--theme-red);
+
+    /* perspective-viewer-phosphor--webgl */
+    --psp-charts--legend--color: var(--theme-green-mid);
+    --psp-charts--treemap--labels: var(--theme-green-mid);
+    --psp-charts--treemap--hover-highlight: #ff6600;
+    --psp-charts--tooltip--color: var(--theme-green-mid);
+    --psp-charts--axis-ticks--color: var(--theme-green-mid);
+    --psp-charts--axis-lines--color: var(--theme-green-dim);
+    --psp-charts--gridline--color: var(--theme-green-dark);
+    --psp-charts--tooltip--background: var(--theme-green-dark);
+    --psp-charts--tooltip--border-color: var(--theme-green-bright);
+    --psp-charts--legend--background: var(--psp--background-color);
+
+    --psp-charts--series--color: #00ff41;
+    --psp-charts--series-1--color: #00ff41;
+    --psp-charts--series-2--color: #00bfff;
+    --psp-charts--series-3--color: #ff0055;
+    --psp-charts--series-4--color: #ffd700;
+    --psp-charts--series-5--color: #7fffd4;
+
+    --psp-charts--gradient--background: linear-gradient(
+        #ff3333 0%,
+        #1a1a2e 50%,
+        #00cc66 100%
+    );
+
+    /* OpenLayers */
+    --psp-openlayers--tile-url: "http://{a-c}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+    --psp-openlayers--attribution--filter: invert(1) hue-rotate(180deg);
+    --psp-openlayers--element--background: #1a1a2e;
+    --psp-openlayers--category-1--color: #ff6600;
+    --psp-openlayers--category-2--color: #33ccff;
+    --psp-openlayers--category-3--color: #00cc66;
+    --psp-openlayers--category-4--color: #ffcc00;
+    --psp-openlayers--category-5--color: #ff3333;
+    --psp-openlayers--category-6--color: #cc66ff;
+    --psp-openlayers--category-7--color: #ff9933;
+    --psp-openlayers--category-8--color: #66ffcc;
+    --psp-openlayers--category-9--color: #ff6699;
+    --psp-openlayers--category-10--color: #99ccff;
+    --psp-openlayers--gradient--background: linear-gradient(
+        #ff3333 0%,
+        #1a1a2e 50%,
+        #00cc66 100%
+    );
+}
+
+perspective-copy-menu[theme="Phosphor"],
+perspective-export-menu[theme="Phosphor"],
+perspective-dropdown[theme="Phosphor"],
+perspective-date-column-style[theme="Phosphor"],
+perspective-datetime-column-style[theme="Phosphor"],
+perspective-number-column-style[theme="Phosphor"],
+perspective-string-column-style[theme="Phosphor"] {
+    /* perspective-viewer-phosphor--colors */
+    --theme-bg0: #0a0a0a;
+    --theme-bg1: #0d0d0d;
+    --theme-bg2: #1a1a1a;
+    --theme-green-bright: #33ff33;
+    --theme-green-mid: #20cc20;
+    --theme-green-dim: #0d660d;
+    --theme-green-dark: #0a3a0a;
+    --theme-amber: #ffb000;
+    --theme-red: #ff3333;
+
+    color: var(--theme-green-mid);
+    --psp--color: var(--theme-green-mid);
+    --psp-active--color: var(--theme-green-bright);
+    --psp-error--color: var(--theme-red);
+    --psp-inactive--color: var(--theme-green-dark);
+    --psp-inactive--border-color: var(--theme-green-dark);
+    --psp--background-color: var(--theme-bg1);
+    --psp-active--background: rgba(51, 255, 51, 0.3);
+    --psp-expression--operator--color: var(--theme-green-dim);
+    --psp-expression--function--color: var(--theme-green-bright);
+    --psp-expression--psp-error--color: var(--theme-red);
+    --psp-calendar--filter: invert(1) hue-rotate(70deg);
+    --psp-warning--color: var(--theme-bg0);
+    --psp-warning--background: var(--theme-amber);
+    --psp-icon--select-arrow--mask-image: var(
+        --psp-icon--select-arrow-light--mask-image
+    );
+    --psp-icon--select-arrow-hover--mask-image: var(
+        --psp-icon--select-arrow-dark--mask-image
+    );
+    --psp-code-editor--symbol--color: var(--theme-green-mid);
+    --psp-code-editor--literal--color: var(--theme-green-bright);
+    --psp-code-editor--operator--color: var(--theme-amber);
+    --psp-code-editor--comment--color: var(--theme-green-dark);
+    --psp-code-editor--column--color: var(--theme-green-bright);
+    --psp-status-icon--connected--color: var(--theme-green-bright);
+    --psp-status-icon--initializing--color: var(--theme-amber);
+    --psp-status-icon--psp-error--color: var(--theme-red);
+
+    background-color: #0a0a0a;
+    border: 1px solid #1a3a1a;
+}

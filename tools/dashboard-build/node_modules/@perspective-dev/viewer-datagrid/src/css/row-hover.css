@@ -1,0 +1,107 @@
+/* ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ * ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+ * ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+ * ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+ * ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+ * ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+ * ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+ * ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+ * ┃ This file is part of the Perspective library, distributed under the terms ┃
+ * ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+ * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+ */
+
+regular-table {
+    tbody {
+        tr:hover
+            th.psp-tree-leaf:not(.psp-select-region):not(
+                .psp-select-region-inactive
+            ),
+        tr:hover
+            th.psp-tree-label:not(.psp-select-region):not(
+                .psp-select-region-inactive
+            ),
+        tr:hover td:not(.psp-select-region):not(.psp-select-region-inactive),
+        tr:hover:after {
+            border-color: var(
+                --psp-datagrid--hover--border-color,
+                #c5c9d080
+            ) !important;
+            box-shadow: 0px 1px 0px
+                var(--psp-datagrid--hover--border-color, #c5c9d080);
+
+            &.psp-menu-open {
+                box-shadow:
+                    inset -2px 0px 0px var(--psp--color),
+                    inset 2px 0px 0px var(--psp--color),
+                    0px 1px 0px
+                        var(--psp-datagrid--hover--border-color, #c5c9d080);
+            }
+        }
+
+        tr:last-child:hover
+            td:not(.psp-select-region):not(
+                .psp-select-region-inactive
+            ).psp-menu-open {
+            box-shadow:
+                inset -2px 0px 0px var(--psp--color),
+                inset 2px 0px 0px var(--psp--color),
+                inset 0px -2px 0px var(--psp--color),
+                0px 1px 0px var(--psp-datagrid--hover--border-color, #c5c9d080);
+        }
+
+        tr:hover
+            + tr
+            th.psp-tree-leaf:not(.psp-select-region):not(
+                .psp-select-region-inactive
+            ),
+        tr:hover
+            + tr
+            th.psp-tree-label:not(.psp-select-region):not(
+                .psp-select-region-inactive
+            ),
+        tr:hover
+            + tr
+            td:not(.psp-select-region):not(.psp-select-region-inactive) {
+            border-top-color: transparent;
+        }
+
+        tr {
+            th:first-child:not(:empty),
+            th:first-child:empty + th:not(:empty),
+            th:first-child:empty ~ th:empty + th:not(:empty),
+            td:first-child {
+                border-left-width: 1px;
+                border-left-color: transparent;
+            }
+
+            th:last-child,
+            td:last-child {
+                border-right-width: 0px;
+                border-right-color: transparent;
+            }
+        }
+
+        tr:hover {
+            color: inherit;
+
+            th:first-child:not(:empty),
+            th:first-child:empty + th:not(:empty),
+            th:first-child:empty ~ th:empty + th:not(:empty),
+            td:first-child {
+                border-left-color: var(
+                    --psp-datagrid--hover--border-color,
+                    #c5c9d080
+                ) !important;
+            }
+
+            th:last-child,
+            td:last-child {
+                border-right-color: var(
+                    --psp-datagrid--hover--border-color,
+                    #c5c9d080
+                ) !important;
+            }
+        }
+    }
+}

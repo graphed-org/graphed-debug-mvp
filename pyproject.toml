@@ -20,17 +20,16 @@ classifiers = [
 dependencies = ["graphed", "graphed-core"]
 
 [project.optional-dependencies]
-# M37: the live dashboard. FINOS Perspective tables served over Tornado (browser viewer + event
-# ingest); websocket-client is the executor-side network transport; pyinstrument is the sampler.
-# perspective-python is PINNED to 3.8.0: the browser client (vendored under dashboard/static/vendor)
-# shares a versioned wire protocol with the server, so the two MUST match exactly, and 3.8.0 (the
-# last FINOS release) is the one whose JS ships browser-ready, plugin-complete `/dist/cdn/` bundles
-# we can vendor. If you bump this pin, re-vendor the matching JS (see static/vendor/README). A
-# heavier OPT-IN extra: 3.8.0 ships cp39-abi3 wheels for macOS (arm64+x86_64), linux-x86_64, and
-# Windows (installs on 3.11-3.14 there) but NOT linux-aarch64 or free-threaded 3.14t — on those the
-# dashboard tests importorskip it and skip, and the core package stays pure-Python.
+# M37: the live dashboard. Perspective tables served over Tornado (browser viewer + event ingest);
+# websocket-client is the executor-side network transport; pyinstrument is the sampler.
+# perspective-python is PINNED to 4.5.1: the browser client (the single self-contained bundle under
+# dashboard/static/vendor, produced by tools/dashboard-build) shares a versioned wire protocol with
+# the server, so the two MUST match exactly. Bump this pin and the bundle's package.json together,
+# then rebuild (see static/vendor/README.md). A heavier OPT-IN extra: 4.5.1 ships cp311-abi3 wheels
+# for macOS (arm64+x86_64), linux (x86_64+aarch64), and Windows (installs on 3.11-3.14) but NOT
+# free-threaded 3.14t — there the dashboard tests importorskip it and the core stays pure-Python.
 dashboard = [
-  "perspective-python==3.8.0",
+  "perspective-python==4.5.1",
   "tornado>=6.2",
   "websocket-client>=1.6",
   "pyinstrument>=5",

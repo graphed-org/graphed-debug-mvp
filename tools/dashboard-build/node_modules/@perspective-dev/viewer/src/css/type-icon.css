@@ -1,0 +1,116 @@
+/* ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ * ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+ * ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+ * ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+ * ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+ * ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+ * ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+ * ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+ * ┃ This file is part of the Perspective library, distributed under the terms ┃
+ * ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+ * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+ */
+
+:host #selected-columns .type-icon,
+:host #sub-columns .type-icon {
+    /* position: absolute; */
+    /* left: 15px; */
+    margin-left: 4px;
+}
+
+:host .icon {
+    background-repeat: no-repeat;
+    background-color: var(--psp--color);
+    display: inline-block;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    flex-shrink: 0;
+    line-height: 0;
+    &.integer {
+        -webkit-mask-image: var(--icon-image);
+        mask-image: var(--icon-image);
+
+        &:before {
+            content: var(--icon-image);
+            visibility: hidden;
+        }
+    }
+}
+
+:host .type-icon {
+    background-repeat: no-repeat;
+    background-color: var(--psp--color);
+    display: inline-block;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    flex-shrink: 0;
+    line-height: 0;
+
+    &.none {
+        content: none;
+    }
+
+    &.integer {
+        -webkit-mask-image: var(--psp-column-type--integer--mask-image);
+        mask-image: var(--psp-column-type--integer--mask-image);
+
+        &:before {
+            content: var(--psp-column-type--integer--mask-image);
+            visibility: hidden;
+        }
+    }
+
+    &.float {
+        -webkit-mask-image: var(--psp-column-type--float--mask-image);
+        mask-image: var(--psp-column-type--float--mask-image);
+        &:before {
+            content: var(--psp-column-type--float--mask-image);
+            visibility: hidden;
+        }
+    }
+
+    &.string {
+        -webkit-mask-image: var(--psp-column-type--string--mask-image);
+        mask-image: var(--psp-column-type--string--mask-image);
+        &:before {
+            content: var(--psp-column-type--string--mask-image);
+            visibility: hidden;
+        }
+    }
+
+    &.boolean {
+        -webkit-mask-image: var(--psp-column-type--boolean--mask-image);
+        mask-image: var(--psp-column-type--boolean--mask-image);
+        &:before {
+            content: var(--psp-column-type--boolean--mask-image);
+            visibility: hidden;
+        }
+    }
+
+    &.date {
+        -webkit-mask-image: var(--psp-column-type--date--mask-image);
+        mask-image: var(--psp-column-type--date--mask-image);
+        &:before {
+            content: var(--psp-column-type--date--mask-image);
+            visibility: hidden;
+        }
+    }
+
+    &.datetime {
+        -webkit-mask-image: var(--psp-column-type--datetime--mask-image);
+        mask-image: var(--psp-column-type--datetime--mask-image);
+        &:before {
+            content: var(--psp-column-type--datetime--mask-image);
+            visibility: hidden;
+        }
+    }
+
+    &.expression {
+        -webkit-mask-image: var(--psp-icon--add-expression--mask-image);
+        mask-image: var(--psp-icon--add-expression--mask-image);
+        &:before {
+            content: var(--psp-icon--add-expression--mask-image);
+            visibility: hidden;
+        }
+    }
+}

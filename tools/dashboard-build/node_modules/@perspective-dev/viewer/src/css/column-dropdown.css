@@ -1,0 +1,109 @@
+/* ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ * ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+ * ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+ * ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+ * ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+ * ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+ * ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+ * ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+ * ┃ This file is part of the Perspective library, distributed under the terms ┃
+ * ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+ * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+ */
+
+:host {
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 10000;
+    outline: none;
+    font-size: 0.75em;
+    border: inherit;
+    /* box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%); */
+    user-select: none;
+    background-color: var(--psp--color, #fff) !important;
+    color: var(--psp--background-color, #333) !important;
+    /* padding: 6px 8px; */
+    border: 1px solid var(--psp--color) !important;
+    max-width: 300px;
+    overflow: hidden;
+    max-height: 600px;
+    overflow: auto;
+    &:hover {
+        --fix: ;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 2px;
+        border: 2px solid transparent;
+        box-shadow: inset 0px 0px 0 4px var(--psp-inactive--color);
+    }
+    &:hover::-webkit-scrollbar-thumb {
+        border: 1px solid transparent;
+        box-shadow: inset 0px 0px 0 4px var(--psp-inactive--color);
+    }
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-corner {
+        background-color: transparent;
+        width: 6px;
+        height: 6px;
+    }
+
+    display: flex;
+    flex-direction: column;
+
+    .selected {
+        background-color: var(--psp--background-color) !important;
+        color: var(--psp--color) !important;
+    }
+
+    span {
+        cursor: pointer;
+        padding: 4px 5px;
+    }
+
+    .no-results {
+        padding: 3px 24px 6px 11px;
+        color: var(--psp-error--color);
+        font-size: 8px;
+    }
+
+    .no-results:before {
+        content: var(--psp-label--no-results--content, "Invalid Column");
+    }
+
+    #add-expression {
+        .icon {
+            background-repeat: no-repeat;
+            background-color: var(--psp--color);
+            display: inline-flex;
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            margin-right: 5px;
+            -webkit-mask-image: var(--psp-icon--add-expression--mask-image);
+            mask-image: var(--psp-icon--add-expression--mask-image);
+            &:before {
+                line-height: 0;
+                content: var(--psp-icon--add-expression--mask-image);
+                visibility: hidden;
+            }
+        }
+    }
+}
+
+:host(:hover) {
+    .selected {
+        background-color: var(--psp--color, #fff) !important;
+        color: var(--psp--background-color, #333) !important;
+    }
+
+    span:hover,
+    span.selected:hover {
+        background-color: var(--psp--background-color) !important;
+        color: var(--psp--color) !important;
+    }
+}
+
+:host(.no-results) {
+    overflow: hidden;
+    background-color: transparent !important;
+    border: none !important;
+}

@@ -1,0 +1,441 @@
+/* ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ * ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+ * ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+ * ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+ * ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+ * ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+ * ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+ * ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+ * ┃ This file is part of the Perspective library, distributed under the terms ┃
+ * ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+ * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+ */
+
+:host {
+    #top_panel.dragdrop-highlight {
+        .psp-text-field {
+            border-bottom-color: var(--psp--color) !important;
+        }
+
+        .pivot-column-border {
+            border-color: var(--psp--color) !important;
+        }
+    }
+
+    #top_panel.group-rollup-mode-total {
+        #group_by {
+            width: 100%;
+            /* height: 26px; */
+            .pivot-column {
+                .pivot-column-total {
+                    min-height: 24px;
+                    margin-bottom: 4px;
+                    &:before {
+                        background-color: var(--psp--background-color);
+                    }
+                }
+
+                .column_name {
+                    color: var(--psp-inactive--color);
+                }
+
+                .type-icon {
+                    background-color: var(--psp-inactive--color);
+                }
+
+                &:hover .pivot-column-border {
+                    border-color: var(--psp-inactive--color, #ababab);
+                }
+
+                /* input { */
+                /*     background-color: var(--psp--background-color); */
+                /*     pointer-events: none; */
+                /*     border: 1px solid var(--psp-inactive--color); */
+                /*     color: var(--psp-inactive--color) !important; */
+                /*     // &:placeholder { */
+
+                /*     // } */
+                /* } */
+            }
+        }
+    }
+
+    #top_panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        padding: 0px 0px 12px 0px;
+        max-width: 1000px;
+        z-index: 1;
+
+        .row_close {
+            margin: 0 6.5px 4px 6.5px;
+            cursor: pointer;
+            height: 14px;
+            display: inline-block;
+            background-repeat: no-repeat;
+            background-color: var(--psp--color);
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            -webkit-mask-image: var(--psp-icon--checkbox-on--mask-image);
+            mask-image: var(--psp-icon--checkbox-on--mask-image);
+
+            &:before {
+                line-height: 0;
+                content: var(--psp-icon--checkbox-on--mask-image);
+                visibility: hidden;
+            }
+
+            &:hover {
+                -webkit-mask-image: var(--psp-icon--checkbox-hover--mask-image);
+                mask-image: var(--psp-icon--checkbox-hover--mask-image);
+            }
+        }
+
+        .pivot-column {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            position: relative;
+
+            .pivot-column-border {
+                flex: 1 1 auto;
+                overflow: hidden;
+                background-color: var(--psp--background-color);
+                border: 1px solid var(--psp-inactive--color, #ababab);
+                border-radius: 2px;
+                display: flex;
+                align-items: center;
+                position: relative;
+                padding-right: 8px;
+
+                .column_name {
+                    display: block;
+                }
+
+                .input-sizer {
+                    flex: 1 100000 auto;
+                }
+            }
+
+            &:hover .pivot-column-border {
+                border-color: var(--psp--color);
+            }
+
+            .pivot-column-draggable {
+                position: relative;
+                width: calc(100% - 27px);
+                min-height: 28px;
+                padding-bottom: 4px;
+                display: flex;
+                align-items: stretch;
+                cursor: move;
+            }
+
+            &:not(.column-empty) .pivot-column-border > .drag-handle {
+                flex: 0 0 auto;
+                margin: 0px 0 0 6px;
+                background-repeat: no-repeat;
+                background-color: var(--psp--color);
+                display: inline-block;
+                -webkit-mask-size: cover;
+                mask-size: cover;
+                -webkit-mask-image: var(
+                    --psp-icon--psp-icon--column-drag-handle--mask-image
+                );
+                mask-image: var(
+                    --psp-icon--psp-icon--column-drag-handle--mask-image
+                );
+
+                &:before {
+                    content: var(
+                        --psp-icon--psp-icon--column-drag-handle--mask-image
+                    );
+                    visibility: hidden;
+                }
+            }
+
+            span {
+                white-space: nowrap;
+            }
+
+            span:first-child {
+                text-overflow: ellipsis;
+                /* max-width: 250px; */
+                overflow: hidden;
+            }
+
+            /* Column is being dragged-over, e.g. this is the drop indicator. */
+            & .config-drop {
+                background-color: var(--psp-placeholder--background);
+                margin-right: 7px;
+                margin-bottom: 4px;
+                border: 1px solid var(--psp--color);
+                border-radius: 2px;
+                overflow: visible;
+                flex: 1 1 auto;
+                align-self: stretch;
+                position: relative;
+                &:before {
+                    content: " ";
+                    position: absolute;
+                    z-index: -1;
+                    top: 5px;
+                    left: 5px;
+                    right: 5px;
+                    bottom: 5px;
+                    border-radius: 2px;
+                    background-color: var(--psp--color);
+                    opacity: 0.3;
+                }
+
+                & > * {
+                    color: transparent;
+                }
+            }
+        }
+
+        label.pivot-selector-label {
+            pointer-events: none;
+        }
+
+        #group_by label.pivot-selector-label:before {
+            content: var(--psp-label--group-by--content, "Group By");
+        }
+
+        #split_by label.pivot-selector-label:before {
+            content: var(--psp-label--split-by--content, "Split By");
+        }
+
+        #sort label.pivot-selector-label:before {
+            content: var(--psp-label--sort--content, "Order By");
+        }
+
+        #filter label.pivot-selector-label:before {
+            content: var(--psp-label--filter--content, "Where");
+        }
+
+        .rrow {
+            display: flex;
+            min-height: 24px;
+            align-items: center;
+            list-style: none;
+            padding: 24px 0px 12px 0px;
+
+            span[draggable] {
+                cursor: move;
+            }
+        }
+
+        .rrow > div {
+            display: flex;
+            min-height: 24px;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .rrow > * {
+            width: 100%;
+            padding: 0;
+            margin: 0px 0px -12px 0px;
+        }
+
+        .psp-text-field ul {
+            min-height: 20px;
+        }
+
+        .psp-text-field {
+            position: relative;
+            border-width: 0;
+            border-style: solid;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 24px;
+            background-size: 100% 200%;
+        }
+
+        .psp-text-field > .psp-text-field__input {
+            flex-direction: column;
+            justify-content: stretch;
+            border: 0px;
+            line-height: 20px;
+            vertical-align: bottom;
+            padding-bottom: 0px;
+            display: none;
+            margin: 0;
+            padding: 0 0 0 0;
+            min-height: 26px;
+        }
+
+        .psp-text-field__input + label {
+            width: 0px;
+            height: 20px;
+            line-height: 17px;
+            box-sizing: border-box;
+            white-space: nowrap;
+            padding: 0px;
+            font-size: var(--label--font-size, 0.75em);
+            display: inline-block;
+        }
+
+        .psp-text-field__input {
+            display: flex !important;
+        }
+
+        .psp-text-field__input + label {
+            position: absolute;
+            top: 0px;
+            margin: var(--column-drop-label--margin, -16px 0px 0px 0px);
+            font-size: var(--label--font-size, 0.75em);
+            display: inline-block;
+        }
+
+        .pivot_controls {
+            display: flex;
+            justify-content: flex-end;
+            height: 15px;
+            margin-bottom: -24px;
+            margin-right: 28px;
+            margin-top: 9px;
+            select:hover {
+                color: var(--psp--color, inherit);
+            }
+        }
+
+        .group_rollup_wrapper {
+            margin-bottom: -30px;
+            flex: 0 1 auto;
+            color: var(--psp-inactive--color);
+            padding-top: 15px;
+            font-size: var(--label--font-size, 0.75em);
+            select {
+                font-size: var(--label--font-size);
+            }
+        }
+
+        #transpose_button {
+            cursor: pointer;
+            flex-grow: 0;
+            font-family: inherit;
+            font-size: var(--label--font-size, 0.75em);
+            user-select: none;
+            padding: 0;
+            align-self: center;
+            /* margin-bottom: -23px; */
+            /* margin-top: 11.5px; */
+            /* align-self: flex-end; */
+            z-index: 1;
+            min-height: 0px;
+            /* margin-right: 30px; */
+
+            &:hover:before {
+                color: var(--psp--color, inherit);
+            }
+
+            &:before {
+                font-family: var(--psp-button--font-family, inherit);
+                color: var(--psp-inactive--color, #666);
+                content: var(--psp-label--transpose-button--content, "Swap");
+            }
+        }
+    }
+
+    .sort-icon {
+        display: inline-flex;
+        margin-left: auto;
+        /* margin-right: 8px; */
+        cursor: pointer;
+        font-family: var(--psp-button--font-family, inherit);
+        background-repeat: no-repeat;
+        background-color: var(--psp--color);
+        -webkit-mask-size: cover;
+        mask-size: cover;
+
+        &:hover {
+            opacity: 1;
+            color: var(--psp-active--color, inherit);
+        }
+
+        &.desc {
+            -webkit-mask-image: var(--psp-icon--sort-desc--mask-image);
+            mask-image: var(--psp-icon--sort-desc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-desc--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.asc {
+            -webkit-mask-image: var(--psp-icon--sort-asc--mask-image);
+            mask-image: var(--psp-icon--sort-asc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-asc--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.none {
+            -webkit-mask-image: var(--psp-icon--sort-none--mask-image);
+            mask-image: var(--psp-icon--sort-none--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-none--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.asc.abs {
+            -webkit-mask-image: var(--psp-icon--sort-abs-asc--mask-image);
+            mask-image: var(--psp-icon--sort-abs-asc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-abs-asc--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.desc.abs {
+            -webkit-mask-image: var(--psp-icon--sort-abs-desc--mask-image);
+            mask-image: var(--psp-icon--sort-abs-desc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-abs-desc--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.col.asc {
+            -webkit-mask-image: var(--psp-icon--sort-col-asc--mask-image);
+            mask-image: var(--psp-icon--sort-col-asc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-col-asc--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.col.desc {
+            -webkit-mask-image: var(--psp-icon--sort-col-desc--mask-image);
+            mask-image: var(--psp-icon--sort-col-desc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-col-desc--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.col.asc.abs {
+            -webkit-mask-image: var(--psp-icon--sort-abs-col-asc--mask-image);
+            mask-image: var(--psp-icon--sort-abs-col-asc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-abs-col-asc--mask-image);
+                visibility: hidden;
+            }
+        }
+
+        &.col.desc.abs {
+            -webkit-mask-image: var(--psp-icon--sort-abs-col-desc--mask-image);
+            mask-image: var(--psp-icon--sort-abs-col-desc--mask-image);
+            &:before {
+                content: var(--psp-icon--sort-abs-col-desc--mask-image);
+                visibility: hidden;
+            }
+        }
+    }
+}

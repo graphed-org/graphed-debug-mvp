@@ -1,0 +1,64 @@
+// ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+// ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+// ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+// ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+// ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+// ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+// ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+// ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+// ┃ This file is part of the Perspective library, distributed under the terms ┃
+// ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+// ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+import { CellMetadata } from "regular-table/dist/esm/types.js";
+import {
+    rgbaToRgb,
+    infer_foreground_from_background,
+} from "../../color_utils.js";
+import type { DatagridModel, ColumnConfig, ColorRecord } from "../../types.js";
+
+interface PluginWithColor extends Omit<ColumnConfig, "color"> {
+    color?: ColorRecord;
+}
+
+export function cell_style_datetime(
+    model: DatagridModel,
+    plugin: PluginWithColor,
+    td: HTMLElement,
+    metadata: CellMetadata,
+): void {
+    const colorRecord: ColorRecord = (() => {
+        if (plugin?.color !== undefined) {
+            return plugin.color;
+        } else {
+            return model._color;
+        }
+    })();
+
+    const [hex, r, g, b] = colorRecord;
+
+    // @ts-ignore
+    if (metadata._is_hidden_by_aggregate_depth) {
+        td.style.backgroundColor = "";
+        td.style.color = "";
+    } else if (
+        plugin?.datetime_color_mode === "foreground" &&
+        metadata.user !== null
+    ) {
+        td.style.color = hex;
+        td.style.backgroundColor = "";
+    } else if (
+        plugin?.datetime_color_mode === "background" &&
+        metadata.user !== null
+    ) {
+        const source = model._plugin_background as [number, number, number];
+        const foreground = infer_foreground_from_background(
+            rgbaToRgb([r, g, b, 1], source),
+        );
+        td.style.color = foreground;
+        td.style.backgroundColor = hex;
+    } else {
+        td.style.backgroundColor = "";
+        td.style.color = "";
+    }
+}

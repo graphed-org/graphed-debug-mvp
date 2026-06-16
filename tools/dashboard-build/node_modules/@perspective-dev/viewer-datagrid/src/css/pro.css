@@ -1,0 +1,197 @@
+/* ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ * ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+ * ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+ * ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+ * ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+ * ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+ * ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+ * ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+ * ┃ This file is part of the Perspective library, distributed under the terms ┃
+ * ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+ * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+ */
+
+regular-table {
+    padding: 0;
+    margin: 12px 0 0 12px;
+    font-family: inherit;
+    --psp-datagrid--hover--border-color: var(--psp-inactive--color, #c5c9d080);
+
+    div[tabindex] {
+        outline: none;
+    }
+
+    & > div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    /* Header groups should overflow and not contribute to auto-sizing. */
+    thead tr:not(.rt-autosize) th {
+        overflow: hidden;
+        max-width: 0px;
+    }
+
+    thead tr:last-child .rt-float,
+    tbody .rt-float {
+        text-align: right;
+    }
+
+    thead .rt-integer,
+    tbody .rt-integer {
+        text-align: right;
+    }
+
+    tbody th {
+        text-align: left;
+    }
+
+    span.rt-tree-container {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    thead .rt-string,
+    tbody .rt-string,
+    thead .rt-date,
+    tbody .rt-date,
+    thead .rt-datetime,
+    tbody .rt-datetime {
+        text-align: left;
+    }
+
+    /* frozen rows */
+
+    thead tr:last-child th {
+        border-bottom: 1px solid #8b868045;
+    }
+
+    tbody tr:first-child td,
+    tbody tr:first-child th {
+        border-top: 1px solid transparent !important;
+    }
+
+    th {
+        position: relative;
+    }
+
+    tr th span.rt-tree-group {
+        margin-left: 5px;
+        margin-right: 15px;
+        border-left: 1px solid #eee;
+        height: 100%;
+    }
+
+    td,
+    th {
+        white-space: nowrap;
+        padding-right: 5px;
+        padding-left: 5px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        height: var(--psp-datagrid--row--height, 19px);
+    }
+
+    table * {
+        box-sizing: border-box;
+    }
+
+    table {
+        position: absolute;
+        color: #666;
+        outline: none;
+    }
+
+    span.rt-row-header-icon {
+        color: #aaa;
+        padding-right: 4px;
+        font-family: var(--psp-button--font-family);
+    }
+
+    span.rt-column-header-icon {
+        font-size: 10px;
+        padding-left: 3px;
+        display: inline-block;
+        width: 10px;
+        font-family: var(--psp-button--font-family);
+    }
+
+    span.rt-row-header-icon:hover {
+        color: #1a7da1;
+        text-shadow: 0px 0px 3px #1a7da1;
+    }
+
+    .rt-selected td {
+        background-color: #eee;
+    }
+
+    .rt-cell-clip {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* OPTIONAL zebra striping */
+
+    /* @zebra-stripe-color: rgb(238,238,238); */
+
+    /* tbody tr:nth-child(even) td:not(.rt-group-header) { */
+    /*     background: @zebra-stripe-color; */
+    /* } */
+
+    /* tbody tr:nth-child(even) span.rt-group-name { */
+    /*     background: @zebra-stripe-color; */
+    /* } */
+
+    td span.rt-group-name,
+    th span.rt-group-name {
+        margin-right: -5px;
+        padding-right: 5px;
+        padding-left: 8px;
+        flex: 1;
+        height: 100%;
+    }
+
+    th span.rt-group-name {
+        text-align: left;
+    }
+
+    td th span.rt-group-leaf,
+    th span.rt-group-leaf {
+        margin-left: 16px;
+        height: 100%;
+    }
+
+    .rt-column-resize {
+        height: 100%;
+        width: 10px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: col-resize;
+    }
+
+    a {
+        color: var(--psp-datagrid--pos-cell--color);
+    }
+
+    a:visited {
+        color: var(--psp-active--color);
+    }
+
+    td.psp-null:after,
+    th.psp-null:after {
+        content: var(--psp-label--null--content, "-");
+        color: var(--psp-label--null--color, inherit);
+        font-size: var(--psp-label--null--font-size, inherit);
+        vertical-align: middle;
+    }
+}

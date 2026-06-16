@@ -1,0 +1,98 @@
+/* ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ * ┃ ██████ ██████ ██████       █      █      █      █      █ █▄  ▀███ █       ┃
+ * ┃ ▄▄▄▄▄█ █▄▄▄▄▄ ▄▄▄▄▄█  ▀▀▀▀▀█▀▀▀▀▀ █ ▀▀▀▀▀█ ████████▌▐███ ███▄  ▀█ █ ▀▀▀▀▀ ┃
+ * ┃ █▀▀▀▀▀ █▀▀▀▀▀ █▀██▀▀ ▄▄▄▄▄ █ ▄▄▄▄▄█ ▄▄▄▄▄█ ████████▌▐███ █████▄   █ ▄▄▄▄▄ ┃
+ * ┃ █      ██████ █  ▀█▄       █ ██████      █      ███▌▐███ ███████▄ █       ┃
+ * ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+ * ┃ Copyright (c) 2017, the Perspective Authors.                              ┃
+ * ┃ ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ ┃
+ * ┃ This file is part of the Perspective library, distributed under the terms ┃
+ * ┃ of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). ┃
+ * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+ */
+
+:host {
+    input[type="checkbox"].alternate {
+        appearance: none;
+        height: 14px;
+        width: 14px;
+        padding: 0px;
+        cursor: pointer;
+        outline: none;
+        margin: 0;
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-color: var(--psp--color, #ccc);
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        font-family: var(--psp-button--font-family, inherit);
+        -webkit-mask-image: var(
+            --psp-label--inactive-column-selector--content,
+            none
+        );
+        mask-image: var(--psp-label--inactive-column-selector--content, none);
+
+        &:before {
+            content: var(--psp-label--inactive-column-selector--content, none);
+            visibility: hidden;
+        }
+
+        &:hover {
+            border-radius: 2px;
+            outline: 1px solid var(--psp--color);
+        }
+
+        &:checked:hover {
+            background-color: var(--psp--color, #ccc);
+        }
+
+        &:checked {
+            -webkit-mask-image: var(
+                --psp-label--active-column-selector--content,
+                none
+            );
+            mask-image: var(--psp-label--active-column-selector--content, none);
+        }
+    }
+
+    input[type="checkbox"] {
+        float: left;
+        appearance: none;
+        height: 14px;
+        width: 14px;
+        padding: 0px;
+        cursor: pointer;
+        outline: none;
+        margin: 0 5px 0 0;
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-color: var(--psp--color);
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        -webkit-mask-image: var(--psp-icon--checkbox-off--mask-image);
+        mask-image: var(--psp-icon--checkbox-off--mask-image);
+
+        &:before {
+            content: var(--psp-icon--checkbox-off--mask-image);
+            visibility: hidden;
+        }
+
+        &:checked {
+            -webkit-mask-image: var(--psp-icon--checkbox-on--mask-image);
+            mask-image: var(--psp-icon--checkbox-on--mask-image);
+        }
+
+        &[disabled] {
+            opacity: 0.2s;
+        }
+
+        &:not(.alternate):hover {
+            -webkit-mask-image: var(--psp-icon--checkbox-hover--mask-image);
+            mask-image: var(--psp-icon--checkbox-hover--mask-image);
+        }
+    }
+
+    input[type="checkbox"]:not(:disabled) {
+        cursor: pointer;
+    }
+}

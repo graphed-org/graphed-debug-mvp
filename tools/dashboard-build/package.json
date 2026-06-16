@@ -1,0 +1,13 @@
+{
+  "name": "graphed-dashboard-build",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Builds the single self-contained Perspective bundle vendored by graphed-debug's live dashboard. Run `npm ci && node build.mjs`; the output is committed, so end users never need Node.",
+  "dependencies": {
+    "@perspective-dev/client": "4.5.1",
+    "@perspective-dev/viewer": "4.5.1",
+    "@perspective-dev/viewer-datagrid": "4.5.1"
+  },
+  "devDependencies": { "esbuild": "0.25.12" }
+}
