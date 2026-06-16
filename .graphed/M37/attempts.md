@@ -66,3 +66,41 @@ something more fully fledged"), the SSE/uPlot implementation was **backed up** t
 - Re-frozen `freeze-M37-1` (debug + exec-local; the SSE suite was deleted/replaced — a sanctioned
   redo, integrity-scan's `assertion_removed` on the deletions is that sanction). The SSE suite lives
   on `m37-sse-uplot`.
+
+## REVISION (2026-06-15) — profiler: pyinstrument -> off-thread sys._current_frames sampler
+
+Per user direction (after measuring a profiling penalty on the real ADL benchmark). Root cause: the
+`WorkerProfiler` was pyinstrument-backed, and pyinstrument installs a **per-Python-call profile
+hook** (it fires on every call/return; the sample interval only gates *recording*). On call-heavy
+HEP code that hook taxes the data path ~3x **regardless of interval** (measured 2.97x at 1/10/50ms),
+so profiling cost ~+53% wall on the benchmark — on the very thread doing the data work. py-spy
+(out-of-process) needs root on macOS / ptrace on Linux; scalene refuses a programmatic `start()`
+outside its launcher — neither can run in a spawned pool worker. So we took dask's
+`distributed.profile` technique: an **off-thread statistical sampler**.
+
+- `graphed_debug._sampler` rewritten: `StackSampler` (pure stdlib) captures its starting thread id on
+  `start()`, then a daemon thread reads `sys._current_frames()[tid]` every 10ms and folds the stack
+  into a nested **inclusive count tree** (`{name,count,children}` keyed by `func;file;line`; a
+  parent's count covers its children → the flamegraph invariant). The task thread is **never hooked**
+  — array kernels release the GIL anyway, so the data path pays ~nothing. `flush`/`stop` return the
+  tree as JSON bytes (the stable `WorkerProfiler` interface is unchanged, so exec-local's emit
+  machinery is untouched). Added `tree_from_bytes`/`merge_into`/`flamegraph` helpers.
+- Dashboard consumer: the profile is no longer a Perspective table. `_server` merges the incoming
+  trees into one accumulated count tree under its lock and serves the d3-flame-graph JSON at
+  **`/api/flamegraph.json`** (snapshot now reports `profile_samples`, not `profile_rows`). `index.html`
+  drops the profile Datagrid and renders a **d3 flamegraph** panel (re-vendored `d3.min.js` +
+  `d3-flamegraph.min.js`/`.css`) that polls that route. `pyinstrument` dropped from the `dashboard`
+  extra + the mypy override; `_wire.profile_message` ships `tree_b64` (was `session_b64`).
+- **Re-measured** (full 8-query combined ADL plan, 50k skim x24 = 168 tasks, persistent 4-worker
+  `ProcessExecutor`, median of 5; two runs): dashboard comms-only ≈ 0% (-0.1%); profiling ON now
+  **+1.5%** vs no dashboard (within noise; ~4300 stack samples merged into a real flamegraph). The
+  pyinstrument-era +53% penalty is gone. Resolves "telemetry must not degrade the data path."
+- Frozen suites re-authored for the new contract (a sanctioned redo, same basis as freeze-M37-1):
+  debug `test_dashboard.py` (sampler tree/flamegraph invariant, merge, malformed-payload guard,
+  `/api/flamegraph.json` route, `profile_samples` ingest) + `test_dashboard_browser.py` (waits for the
+  `#profile svg.d3-flame-graph` instead of a Datagrid); exec-local capstone asserts
+  `profile_samples`/`server.flamegraph().value` cross the process+network boundary. Gates green:
+  debug 14/14 frozen m37 + full frozen suite (94.5% cov, `_sampler.py` 97%), ruff + mypy --strict
+  clean; exec-local m37 16/16 (incl. the live cross-process capstone); browser test passes headless
+  (flamegraph renders, zero JS console/page errors). Re-freeze `freeze-M37-5` (the shared M37
+  freeze-event counter: debug last at -3, exec-local at -4; this event bumps both to -5).

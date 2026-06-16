@@ -21,18 +21,20 @@ dependencies = ["graphed", "graphed-core"]
 
 [project.optional-dependencies]
 # M37: the live dashboard. Perspective tables served over Tornado (browser viewer + event ingest);
-# websocket-client is the executor-side network transport; pyinstrument is the sampler.
-# perspective-python is PINNED to 4.5.1: the browser client (the single self-contained bundle under
-# dashboard/static/vendor, produced by tools/dashboard-build) shares a versioned wire protocol with
-# the server, so the two MUST match exactly. Bump this pin and the bundle's package.json together,
-# then rebuild (see static/vendor/README.md). A heavier OPT-IN extra: 4.5.1 ships cp311-abi3 wheels
-# for macOS (arm64+x86_64), linux (x86_64+aarch64), and Windows (installs on 3.11-3.14) but NOT
+# websocket-client is the executor-side network transport. The profiler is an off-thread
+# sys._current_frames sampler living in pure stdlib (graphed_debug._sampler) — NO third-party
+# profiler dependency (it samples the worker's task thread from a daemon thread, so it adds ~nothing
+# to the data path; the dashboard renders its merged stack tree as a d3 flamegraph, vendored client-
+# side). perspective-python is PINNED to 4.5.1: the browser client (the single self-contained bundle
+# under dashboard/static/vendor, produced by tools/dashboard-build) shares a versioned wire protocol
+# with the server, so the two MUST match exactly. Bump this pin and the bundle's package.json
+# together, then rebuild (see static/vendor/README.md). A heavier OPT-IN extra: 4.5.1 ships cp311-abi3
+# wheels for macOS (arm64+x86_64), linux (x86_64+aarch64), and Windows (installs on 3.11-3.14) but NOT
 # free-threaded 3.14t — there the dashboard tests importorskip it and the core stays pure-Python.
 dashboard = [
   "perspective-python==4.5.1",
   "tornado>=6.2",
   "websocket-client>=1.6",
-  "pyinstrument>=5",
 ]
 # the backends + corpus are only needed to exercise realistic analyses in the test-suite. The
 # dashboard stack is NOT here: it is the `dashboard` extra (perspective-python has no free-threaded
@@ -85,7 +87,7 @@ strict = true
 files = ["src"]
 
 # awkward/numpy are untyped at the array-interop boundary; only exercised in tests anyway.
-# The M37 dashboard extra (perspective/tornado/websocket/pyinstrument) ships no type stubs.
+# The M37 dashboard extra (perspective/tornado/websocket) ships no type stubs.
 [[tool.mypy.overrides]]
 module = [
   "awkward.*",
@@ -93,7 +95,6 @@ module = [
   "graphed_awkward.*",
   "graphed_numpy.*",
   "graphed_corpus.*",
-  "pyinstrument.*",
   "perspective.*",
   "tornado.*",
   "websocket.*",
