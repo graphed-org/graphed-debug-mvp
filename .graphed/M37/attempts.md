@@ -104,3 +104,32 @@ outside its launcher — neither can run in a spawned pool worker. So we took da
   clean; exec-local m37 16/16 (incl. the live cross-process capstone); browser test passes headless
   (flamegraph renders, zero JS console/page errors). Re-freeze `freeze-M37-5` (the shared M37
   freeze-event counter: debug last at -3, exec-local at -4; this event bumps both to -5).
+
+## REVISION (2026-06-16) — dashboard UX: flamegraph hover tooltip + dask-style progress bars
+
+Per user direction (the scrolling start/stop task list was hard to parse mid-run; flamegraph cells
+truncate names). **graphed-debug only** — graphed-core seam + graphed-exec-local emit unchanged.
+
+- Flamegraph: a shared **pop-out hover tooltip** (delegated `mousemove` on `#profile`, so it survives
+  every `chart.update()`) reads the hovered cell's bound datum and shows the full
+  `function;file:line` + sample count + % of total. No dependency on d3-flame-graph's (un-bundled)
+  tooltip module.
+- Tasks: replaced the streaming `tasks` Datagrid with the **dask-distributed "Progress" idiom**
+  (studied `distributed/dashboard/components/scheduler.py::TaskProgress` + `diagnostics/progress.py`):
+  stacked horizontal bars, one **overall** (finished/in-flight/errored/pending tile the submitted
+  total) + one **per worker** (bar length normalized to the busiest worker's load, so stragglers /
+  imbalance are visible; green fill = that worker's completion), each with a hover tooltip of its
+  counts + most-recent partition. Server side: `_ingest_task` now also folds per-worker counts (under
+  the same lock, on the IOLoop thread — NOT the data path), exposed via `progress()` + a new
+  `/api/progress.json` route the browser polls (~400ms). The `tasks`/`stats` Perspective tables + the
+  whole wire/seam are **unchanged**, so the existing streaming/stats frozen tests stay green.
+- **No perf regression** (the whole point of the prior work): the aggregation is server-IOLoop-thread
+  only; re-measured the three-way ADL benchmark (same harness) twice — comms penalty within noise
+  (-1.0%..+0.9%), profiling within noise (+0.0%..+1.1%). Identical to the pre-change baseline.
+- Frozen suite amended (sanctioned redo, same basis as the earlier refreezes): `test_dashboard.py`
+  adds progress aggregation (overall + per-worker) + `/api/progress.json` route tests;
+  `test_dashboard_browser.py` waits for the `.pbar-row` progress panel (was the tasks Datagrid) and
+  asserts the **hover tooltip** appears on both a flamegraph cell and a progress bar. Gates green:
+  ruff + mypy --strict clean, full frozen suite 94.9% cov (`_server.py` 93%), sphinx -W, headless
+  browser passes (panels render + tooltips work, zero JS errors). Re-freeze **`freeze-M37-6`**
+  (debug only; exec-local stays at -5).
