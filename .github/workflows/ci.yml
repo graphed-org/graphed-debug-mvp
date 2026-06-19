@@ -40,12 +40,9 @@ jobs:
           python -m pip install "${{ env.FRONTEND }}" "${{ env.NUMPY }}" "${{ env.AWKWARD }}" "${{ env.CORPUS }}"
           # the dashboard extra (perspective-python==3.8.0 + tornado/websocket/pyinstrument)
           python -m pip install -e ".[dev,dashboard]"
-      - name: Ruff
-        run: |
-          ruff check .
-          ruff format --check .
-      - name: Mypy (strict)
-        run: mypy
+      - uses: astral-sh/setup-uv@v5
+      - name: Lint + types (pre-commit hooks via prek)
+        run: uvx prek@0.4.5 run --all-files --show-diff-on-failure
       - name: Pytest + coverage gate (>=90%)
         run: pytest tests/frozen --cov=graphed_debug --cov-branch --cov-report=term-missing
 
